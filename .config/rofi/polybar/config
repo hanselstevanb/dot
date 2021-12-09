@@ -1,0 +1,148 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar go to https://github.com/polybar/polybar The README contains a lot of information
+;==========================================================
+include-file = ~/.config/polybar/colors.ini
+
+[bar/bar]
+;monitor = ${env:MONITOR:HDMI-1}
+width = 98%
+height = 24
+bottom = true
+offset-x = 1%
+offset-y = 1%
+radius = 0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+border-bottom-size = 0
+border-bottom-color = ${colors.color8}
+
+module-margin-left = 2
+module-margin-right = 1
+
+font-0 = "Noto Sans Regular:style=Regular:size=9:antialias=true;3"
+font-1 = "Hurmit Nerd Font:style=Regular:size 9;4"
+
+modules-left = bspwm xwindow
+modules-center = date
+modules-right = cpu memory line
+
+tray-position = right
+tray-padding = 6
+tray-background = ${colors.background}
+
+wm-restack = bspwm
+
+enable-ipc = true
+override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+label-urgent-foreground = ${colors.background-alt}
+label-urgent-background = ${colors.color9}
+
+[module/xwindow]
+type = internal/xwindow
+format = <label>
+label = %title%
+label-maxlen = 30
+
+[module/bspwm]
+type = internal/bspwm
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+label-focused = %index%
+label-focused-foreground = ${colors.foreground}
+label-focused-background = ${colors.xbs}
+label-focused-padding = 3
+
+label-occupied = %index%
+label-occupied-padding = 3
+
+label-urgent = %index%
+label-urgent-foreground = ${colors.alert}
+label-urgent-padding = 3
+
+label-empty =
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+label = %percentage:2%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = "   "
+label = %percentage_used%%
+format = <label>
+
+bar-used-indicator = 
+bar-used-width = 6
+bar-used-foreground-0 = #5AF78E
+bar-used-foreground-1 = #5AF78E
+bar-used-foreground-2 = #FF7657
+bar-used-foreground-3 = #FF5C57
+bar-used-fill = 􀂓
+bar-used-empty = 􀂒
+bar-used-empty-foreground = #444444
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = %a %d
+date-alt = " %d-%m-%Y"
+time = %H:%M
+time-alt = %H:%M
+
+label = %date% %time%
+format = <label>
+format-foreground = ${colors.foreground}
+
+[module/line]
+type = custom/text
+content="%{T2}|%{T-}"
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[module/dunst]
+type = custom/ipc
+initial = 1
+format-foreground = ${colors.color3}
+format-background = ${colors.background}
+
+hook-0 = echo "%{A1: dunstctl set-paused true && polybar-msg hook dunst 2:}  %{A}" &
+hook-1 = echo "%{A1: dunstctl set-paused false && polybar-msg hook dunst 1:} %{F#81A1C1}%{F-} %{A}" &
+
+; vim:ft=dosini
